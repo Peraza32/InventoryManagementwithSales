@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -29,5 +30,13 @@ public class Product {
 
     @ManyToOne
     private Provider provider;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Subcategory subcategory;
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderDetail> orderDetails;
+
+
 
 }
