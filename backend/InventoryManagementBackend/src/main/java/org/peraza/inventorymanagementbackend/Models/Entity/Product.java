@@ -27,4 +27,7 @@ public class Product {
     @Column
     private int quantity;
 
+    @ManyToOne
+    private Provider provider;
+
 }
