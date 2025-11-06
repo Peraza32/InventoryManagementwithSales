@@ -26,10 +26,6 @@ CREATE TABLE IF NOT EXISTS user_role(
 	user_role_name VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS user_type( -- Natural or Company
-	user_type_id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	user_type_name VARCHAR(100) NOT NULL
-);
 
 CREATE TABLE IF NOT EXISTS provider(
 	provider_id UUID NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -69,7 +65,7 @@ CREATE TABLE IF NOT EXISTS users(
 	phone_number VARCHAR(50),
 	email VARCHAR(50),
 	birthdate DATE, 
-	user_type_id INT NOT NULL,
+	user_type CHAR(1) NOT NULL,
 	role_id INT NOT NULL,
 	CONSTRAINT fk_user_type FOREIGN KEY (user_type_id) REFERENCES user_type(user_type_id),
 	CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES user_role(user_role_id)
