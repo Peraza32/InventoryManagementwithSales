@@ -19,21 +19,13 @@ CREATE TABLE IF NOT EXISTS payment_status(
 	payment_status VARCHAR(30) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS ticket(
-	ticket_id UUID NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
-	total_sale NUMERIC(10,2) NOT NULL,
-	generation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+
 
 CREATE TABLE IF NOT EXISTS user_role(
 	user_role_id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	user_role_name VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS user_type( -- Natural or Company
-	user_type_id INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	user_type_name VARCHAR(100) NOT NULL
-);
 
 CREATE TABLE IF NOT EXISTS provider(
 	provider_id UUID NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -73,10 +65,18 @@ CREATE TABLE IF NOT EXISTS users(
 	phone_number VARCHAR(50),
 	email VARCHAR(50),
 	birthdate DATE, 
-	user_type_id INT NOT NULL,
+	user_type CHAR(1) NOT NULL,
 	role_id INT NOT NULL,
 	CONSTRAINT fk_user_type FOREIGN KEY (user_type_id) REFERENCES user_type(user_type_id),
 	CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES user_role(user_role_id)
+);
+
+CREATE TABLE IF NOT EXISTS ticket(
+	ticket_id UUID NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
+	total_sale NUMERIC(10,2) NOT NULL,
+	generation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	order_id UUID NOT NULL,
+	CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 
 CREATE TABLE IF NOT EXISTS orders(
@@ -103,3 +103,6 @@ CREATE TABLE IF NOT EXISTS order_detail(
 	CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES orders(order_id),
 	CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES product(product_id)
 );
+
+ALTER TABLE ticket ADD order_id UUDI NOT NULL
+ALTER TABLE ticket ADD CONSTRAINT fk_order
